@@ -1,0 +1,10 @@
+# All size-specific CSS files are generated in this project, real sources are in `default.scss`
+style_*.css
+style_*.css.map
+style_*.scss
+
+# `vm.js` is generated, sources are in `vm.coffee`
+vm.js
+
+# Ignore sass cache
+.sass-cache
