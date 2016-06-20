@@ -1,0 +1,166 @@
+$line_height: 1.2;
+
+body {
+    margin: 0;
+    font-family: "Droid Sans";
+    line-height: $line_height;
+}
+
+.layer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+$window_padding: 6px;
+$font_size: 18px;
+
+$text_window_full_height: 3 * $font_size * $line_height;
+$text_window_full_top: $game_h - $text_window_full_height - 2 * $window_padding - $window_padding;
+$text_window_half_height: $text_window_full_height / 2 - $window_padding;
+
+// Main container for everything VN-related
+#story_window {
+    position: relative;
+    width: $game_w;
+    height: $game_h;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// Container for game graphics elements: backgrounds, CG/EV graphics, sprites, etc
+#game_window {
+    position: absolute;
+    width: $game_w;
+    height: $game_h;
+    overflow: hidden;
+}
+
+// Container for everything related to in-game texts and UI elements. Should be
+// hideable without major problems if user wants to check out just the graphics
+// without any distractions.
+#text_window {
+    position: absolute;
+    width: $game_w;
+    z-index: 1000;
+}
+
+#text_window_header {
+    $height: $font_size * $line_height;
+
+    position: absolute;
+    top: $text_window_full_top - $height - 2 * $window_padding - $window_padding;
+    left: $window_padding;
+    width: $game_w - 4 * $window_padding;
+    height: $font_size * $line_height;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: $window_padding;
+    font-size: $font_size;
+}
+
+#text_window_full {
+    position: absolute;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: $window_padding;
+    font-size: $font_size;
+
+    width: $game_w - 4 * $window_padding;
+    left: $window_padding;
+
+    top: $text_window_full_top;
+    height: $text_window_full_height;
+
+    display: none;
+}
+
+#text_window_lang1 {
+    position: absolute;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: $window_padding;
+    font-size: $font_size;
+
+    width: $game_w - 4 * $window_padding;
+    left: $window_padding;
+
+    top: $text_window_full_top;
+    height: $text_window_full_height;
+
+    display: none;
+}
+
+#text_window_lang2 {
+    position: absolute;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: $window_padding;
+    font-size: $font_size;
+
+    width: $game_w - 4 * $window_padding;
+    left: $window_padding;
+
+    top: $game_h + $window_padding;
+    height: $text_window_full_height;
+
+    display: none;
+}
+
+#go_button {
+    position: absolute;
+    top: 10px;
+    left: 1000px;
+    width: 270px;
+    height: 500px;
+    opacity: 0.2;
+}
+
+#settings_button {
+    position: absolute;
+    top: $window_padding;
+    right: $window_padding;
+    width: 80px;
+    z-index: 2000;
+}
+
+$settings_w_pad: 50px;
+$settings_h_pad: 30px;
+
+#settings_dialog {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+
+    width: $game_w - $settings_w_pad * 2;
+    height: $text_window_full_top - $settings_h_pad * 2;
+
+    top: $settings_h_pad;
+    left: $settings_w_pad;
+    z-index: 3000;
+}
+
+#settings_dialog_inner {
+    padding: $window_padding * 5;
+}
+
+#settings_dialog label {
+    display: block;
+}
+
+#menu_frame {
+    position: absolute;
+    width: 500px;
+    top: 50px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: none;
+    z-index: 1500;
+}
+
+.menu_item {
+    background: #101845;
+    color: white;
+    width: 100%;
+}
