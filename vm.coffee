@@ -207,17 +207,27 @@ class VM
       else
         txt
 
-  showText: (charName, txt, op) ->
+  showText: (charName, textColor, txt, op) ->
+    # Make sure that textColor is properly deleted: it must be "null",
+    # not just "undefined" to reset style
+    if !(textColor?)
+      textColor = null
+
     char_name_el = document.getElementById('text_window_header')
+    console.log("textColor = ", textColor)
+    char_name_el.style.color = textColor
     char_name_el.innerHTML = if charName
       charName[@settings.langCharNames]
     else
       ''
 
     if @settings.bilingual
-      @showTextInElement(document.getElementById('text_window_lang1'), txt[@settings.lang1], op, @settings.lang1)
+      e1 = document.getElementById('text_window_lang1')
+      e1.style.color = textColor
+      @showTextInElement(e1, txt[@settings.lang1], op, @settings.lang1)
 
       txt_en_el = document.getElementById('text_window_lang2')
+      txt_en_el.style.color = textColor
       if txt.en
         @showTextInElement(txt_en_el, txt.en, op, 'en')
       else
@@ -226,7 +236,9 @@ class VM
         translateYandex txt.ja, 'ja-en', (trans_txt) ->
           tmp_vm.showTextInElement(txt_en_el, trans_txt, op, 'en')
     else
-      @showTextInElement(document.getElementById('text_window_full'), txt[@settings.lang1], op, @settings.lang1)
+      el = document.getElementById('text_window_full')
+      el.style.color = textColor
+      @showTextInElement(el, txt[@settings.lang1], op, @settings.lang1)
 
   memEval: (expr) ->
     `var _t; with (this.mem) { _t = eval(expr) }`
@@ -414,13 +426,13 @@ class VM
         true
 
     @narrate: (inst, vm) ->
-      vm.showText(null, inst.txt, inst.op)
+      vm.showText(null, null, inst.txt, inst.op)
       true
 
     @say: (inst, vm) ->
       char = vm.program.chars[inst.char]
       char = inst.char unless char
-      vm.showText(char.name, inst.txt, inst.op)
+      vm.showText(char.name, char.color, inst.txt, inst.op)
 
       if inst.voice
         voice_el = VM.getAudio('voice')
