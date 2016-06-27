@@ -1,11 +1,16 @@
+COFFEE_SRCS=\
+	rangeset.coffee \
+	vm.coffee
+
 all: \
 	style_800x600.css \
 	style_960x540.css \
 	style_1280x720.css \
 	vm.js
 
-vm.js: vm.coffee
-	coffee -c vm.coffee
+vm.js: $(COFFEE_SRCS)
+	cat $(COFFEE_SRCS) | coffee -c --stdio >$@.tmp
+	mv $@.tmp $@
 
 %.css: %.scss
 	scss $< $@
