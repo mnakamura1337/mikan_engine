@@ -63,6 +63,9 @@ class VM
       <div id="text_window">
         <div id="menu_frame"></div>
         <div id="text_window_bg"></div>
+        <div id="text_window_face_frame">
+          <div id="text_window_face"></div>
+        </div>
         <div id="text_window_header"></div>
         <div id="text_window_full"></div>
         <div id="text_window_lang1"></div>
@@ -245,6 +248,12 @@ class VM
     return _t
 
   @getLayer: (id) ->
+    if id == 'face'
+      el = document.getElementById("text_window_face")
+      if !el
+        throw "getLayer: face requested, but no text_window_face found"
+      return el
+
     elId = "layer_#{id}"
     el = document.getElementById(elId)
     return el if el
