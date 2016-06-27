@@ -3,6 +3,7 @@ COFFEE_SRCS=\
 	vm.coffee
 
 all: \
+	style_640x480.css \
 	style_800x600.css \
 	style_960x540.css \
 	style_1280x720.css \
@@ -14,6 +15,13 @@ vm.js: $(COFFEE_SRCS)
 
 %.css: %.scss
 	scss $< $@
+
+style_640x480.scss: default.scss
+	rm -f $@.tmp
+	echo '$$game_w: 640px;' >>$@.tmp
+	echo '$$game_h: 480px;' >>$@.tmp
+	cat default.scss >>$@.tmp
+	mv $@.tmp $@
 
 style_800x600.scss: default.scss
 	rm -f $@.tmp
