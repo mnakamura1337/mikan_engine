@@ -148,6 +148,43 @@ $settings_h_pad: 30px;
     display: block;
 }
 
+#history_button {
+    position: absolute;
+    top: $window_padding;
+    right: $window_padding * 2 + 80px;
+    width: 80px;
+    z-index: 2000;
+}
+
+#history_dialog {
+    position: absolute;
+    width: $game_w;
+    height: $game_h;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    z-index: 3000;
+}
+
+#history_area {
+    margin: $window_padding;
+    height: $game_h - 50px;
+    background: rgba(24, 24, 24, 0.8);
+    overflow-y: scroll;
+}
+
+#history_area .entry {
+    clear: both;
+}
+
+#history_area .char {
+    float: left;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
 #menu_frame {
     position: absolute;
     width: 500px;

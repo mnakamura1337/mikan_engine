@@ -2,6 +2,7 @@ class VM
   constructor: (@program) ->
     @ip = 0
     @mem = {}
+    @seen = new RangeSet();
     @layers = {}
     @loadSettings()
 
@@ -72,6 +73,7 @@ class VM
         <div id="text_window_lang2"></div>
         <button id="go_button" onclick="vm.iterate();">Go</button>
         <button id="settings_button" onclick="vm.settingsDialog();">Settings</button>
+        <button id="history_button" onclick="vm.historyDialog();">History</button>
       </div>
       ''')
     vm = @
@@ -157,10 +159,52 @@ class VM
       $('#settings_button').prop('disabled', false)
       false
 
+  historyDialog: ->
+    tw = $('#text_window');
+
+    tw.append('''
+      <div id="history_dialog">
+        <div id="history_area">
+        </div>
+      <p>
+        <button id="history_ok">OK</button>
+      </p>
+      </div>
+      ''')
+
+    ha = $('#history_area')
+    @historyPopulate(ha)
+    ha.scrollTop(1e10)
+
+    $('#history_ok').click ->
+      $('#history_dialog').remove()
+      false
+
+  historyPopulate: (cnt) ->
+    s = ""
+    lang = @settings.lang1
+    @seen.foreach (i) ->
+      op = @program.script[i]
+      console.log(op)
+      switch op.op
+        when 'say', 'think', 'narrate'
+          s += '<div class="entry">'
+          chName = if op.char
+            @program.chars[op.char].name[lang]
+          else
+            ''
+          s += "<div class=\"char\">#{chName}</div>"
+          s += "<div class=\"txt\">#{VM.textInElement(op.txt[lang], op.op, lang)}</div></div>\n"
+
+    cnt.html(s)
+
+    return null
+
   iterate: ->
     loop
       op = @program.script[@ip]
       console.log(@ip, op)
+      @seen.add(@ip)
       @ip++
       opName = op.op
 
@@ -195,8 +239,8 @@ class VM
   convertFileName: (fn) ->
     @program.meta.asset_path + "/" + fn.replace(/\\/g, '/')
 
-  showTextInElement: (el, txt, op, lang) ->
-    el.innerHTML = switch op
+  @textInElement: (txt, op, lang) ->
+    switch op
       when 'say'
         switch lang
           when 'en' then "“#{txt}”"
@@ -209,6 +253,9 @@ class VM
           else "(#{txt})"
       else
         txt
+
+  @showTextInElement: (el, txt, op, lang) ->
+    el.innerHTML = VM.textInElement(txt, op, lang)
 
   showText: (charName, textColor, txt, op) ->
     # Make sure that textColor is properly deleted: it must be "null",
@@ -227,21 +274,20 @@ class VM
     if @settings.bilingual
       e1 = document.getElementById('text_window_lang1')
       e1.style.color = textColor
-      @showTextInElement(e1, txt[@settings.lang1], op, @settings.lang1)
+      VM.showTextInElement(e1, txt[@settings.lang1], op, @settings.lang1)
 
       txt_en_el = document.getElementById('text_window_lang2')
       txt_en_el.style.color = textColor
       if txt.en
-        @showTextInElement(txt_en_el, txt.en, op, 'en')
+        VM.showTextInElement(txt_en_el, txt.en, op, 'en')
       else
         txt_en_el.innerHTML = "<div class='preloader'><img src='preloader.gif'></div>"
-        tmp_vm = @
         translateYandex txt.ja, 'ja-en', (trans_txt) ->
-          tmp_vm.showTextInElement(txt_en_el, trans_txt, op, 'en')
+          VM.showTextInElement(txt_en_el, trans_txt, op, 'en')
     else
       el = document.getElementById('text_window_full')
       el.style.color = textColor
-      @showTextInElement(el, txt[@settings.lang1], op, @settings.lang1)
+      VM.showTextInElement(el, txt[@settings.lang1], op, @settings.lang1)
 
   memEval: (expr) ->
     `var _t; with (this.mem) { _t = eval(expr) }`
