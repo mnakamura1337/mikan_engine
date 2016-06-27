@@ -7,6 +7,11 @@ class RangeSet
   add: (x) ->
     @arr[x] = 1
 
+  foreach: (func) ->
+    for val, i in @arr
+      if val
+        func(i)
+
   toString: ->
     closeRange = ->
       if st != null
