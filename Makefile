@@ -7,6 +7,7 @@ all: \
 	style_800x600.css \
 	style_960x540.css \
 	style_1280x720.css \
+	style_1280x720_f280x280.css \
 	vm.js
 
 vm.js: $(COFFEE_SRCS)
@@ -41,5 +42,14 @@ style_1280x720.scss: default.scss
 	rm -f $@.tmp
 	echo '$$game_w: 1280px;' >>$@.tmp
 	echo '$$game_h: 720px;' >>$@.tmp
+	cat default.scss >>$@.tmp
+	mv $@.tmp $@
+
+style_1280x720_f280x280.scss: default.scss
+	rm -f $@.tmp
+	echo '$$game_w: 1280px;' >>$@.tmp
+	echo '$$game_h: 720px;' >>$@.tmp
+	echo '$$face_w: 280px;' >>$@.tmp
+	echo '$$face_h: 280px;' >>$@.tmp
 	cat default.scss >>$@.tmp
 	mv $@.tmp $@
