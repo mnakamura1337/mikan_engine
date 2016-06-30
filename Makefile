@@ -1,5 +1,6 @@
 COFFEE_SRCS=\
 	rangeset.coffee \
+	defaultui.coffee \
 	vm.coffee
 
 all: \
