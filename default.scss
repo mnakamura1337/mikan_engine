@@ -45,13 +45,34 @@ $text_window_half_height: $text_window_full_height / 2 - $window_padding;
     z-index: 1000;
 }
 
+#text_window_face {
+    position: absolute;
+}
+
+@if variable-exists(face_w) {
+    #text_window_face_frame {
+        position: absolute;
+        top: $game_h - $face_h;
+        left: 2 * $window_padding;
+        width: $face_w;
+        height: $face_h;
+        overflow: hidden;
+    }
+
+    $text_window_width: $game_w - 6 * $window_padding - $face_w !global;
+    $text_window_left: $window_padding * 3 + $face_w !global;
+} @else {
+    $text_window_width: $game_w - 4 * $window_padding !global;
+    $text_window_left: $window_padding !global;
+}
+
 #text_window_header {
     $height: $font_size * $line_height;
 
     position: absolute;
     top: $text_window_full_top - $height - 2 * $window_padding - $window_padding;
-    left: $window_padding;
-    width: $game_w - 4 * $window_padding;
+    left: $text_window_left;
+    width: $text_window_width;
     height: $font_size * $line_height;
     background: rgba(0, 0, 0, 0.5);
     color: white;
@@ -66,9 +87,8 @@ $text_window_half_height: $text_window_full_height / 2 - $window_padding;
     padding: $window_padding;
     font-size: $font_size;
 
-    width: $game_w - 4 * $window_padding;
-    left: $window_padding;
-
+    left: $text_window_left;
+    width: $text_window_width;
     top: $text_window_full_top;
     height: $text_window_full_height;
 
@@ -82,9 +102,8 @@ $text_window_half_height: $text_window_full_height / 2 - $window_padding;
     padding: $window_padding;
     font-size: $font_size;
 
-    width: $game_w - 4 * $window_padding;
-    left: $window_padding;
-
+    left: $text_window_left;
+    width: $text_window_width;
     top: $text_window_full_top;
     height: $text_window_full_height;
 
@@ -98,9 +117,8 @@ $text_window_half_height: $text_window_full_height / 2 - $window_padding;
     padding: $window_padding;
     font-size: $font_size;
 
-    width: $game_w - 4 * $window_padding;
-    left: $window_padding;
-
+    left: $text_window_left;
+    width: $text_window_width;
     top: $game_h + $window_padding;
     height: $text_window_full_height;
 
