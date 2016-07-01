@@ -107,14 +107,14 @@ class DefaultUI
 
   historyPopulate: (cnt) ->
     s = ""
-    lang = @vm.settings.lang1
-    @seen.foreach (i) ->
+    lang = @vm.settings['lang1']
+    @vm.seen.foreach (i) ->
       op = @vm.program.script[i]
       switch op.op
         when 'say', 'think', 'narrate'
           s += '<div class="entry">'
           chName = if op.char
-            @vm.program.chars[op.char].name[lang]
+            @vm.program.chars[op.char].name[@vm.settings['langCharNames']]
           else
             ''
           s += "<div class=\"char\">#{chName}</div>"
